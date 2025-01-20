@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -18,14 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/google/login', function () {
-    return Socialite::driver('github')->redirect();
-});
-
-Route::get('/google/callback', function () {
-    $user = Socialite::driver('github')->user();
-
-    // $user->token
-});
+Route::get('/google/login', [SocialController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('/google/redirect', [SocialController::class, 'OpenGoogleAccountDetails'])->name('google.redirect');
 
 require __DIR__.'/auth.php';
